@@ -137,14 +137,10 @@ make_local_trackler() {
 
   # Set the version to that expected by x-api
   echo "1"
-  grep "trackler" ${xapi_home}/Gemfile.lock
+  egrep "trackler" ${xapi_home}/Gemfile.lock
   echo "2"
-  grep "trackler (\d" ${xapi_home}/Gemfile.lock
-  echo "3"
-  grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//'
-  echo "4"
-  grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//'
-  version=$( grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
+  egrep "trackler \(\d" ${xapi_home}/Gemfile.lock
+  version=$( egrep "trackler \(\d" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
   echo "module Trackler VERSION = \"${version}\" end" > lib/trackler/version.rb
   cat lib/trackler/version.rb
 
