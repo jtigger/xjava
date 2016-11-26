@@ -121,7 +121,8 @@ git_clone() {
 
 make_local_trackler() {
   local trackler="$1"
-  echo ">>> make_local_trackler(trackler=\"${trackler}\")"
+  local xapi_home="$2"
+  echo ">>> make_local_trackler(trackler=\"${trackler}\",xapi_home=\"${xapi_home}\")"
 
   local xjava=$( pwd )
   pushd ${trackler}
@@ -133,6 +134,10 @@ make_local_trackler() {
   mkdir -p tracks/java/exercises
   cp ${xjava}/config.json tracks/java
   cp -r ${xjava}/exercises tracks/java
+
+  # Set the version to that expected by x-api
+  version=$( grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
+  echo "module Trackler VERSION = \"${version}\" end" > lib/trackler/version.rb
 
   gem install bundler
   bundle install
@@ -236,13 +241,14 @@ main() {
 
   clean "${build_dir}"
 
+
   # Make a version of trackler that includes the source from this repo.
+  git_clone "x-api" "${xapi_home}"
   git_clone "trackler" "${trackler_home}"
   assert_ruby_installed "${trackler_home}"
-  make_local_trackler "${trackler_home}"
+  make_local_trackler "${trackler_home}" "${xapi_home}"
 
   # Stand-up a local instance of x-api so we can fetch the exercises through it.
-  git_clone "x-api" "${xapi_home}"
   assert_ruby_installed "${xapi_home}"
   start_x_api "${xapi_home}"
 
