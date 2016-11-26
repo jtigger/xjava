@@ -139,7 +139,7 @@ make_local_trackler() {
   echo "1"
   egrep "trackler" ${xapi_home}/Gemfile.lock
   echo "2"
-  egrep "trackler \(\d" ${xapi_home}/Gemfile.lock
+  egrep "trackler .\d" ${xapi_home}/Gemfile.lock
   version=$( egrep "trackler \(\d" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
   echo "module Trackler VERSION = \"${version}\" end" > lib/trackler/version.rb
   cat lib/trackler/version.rb
