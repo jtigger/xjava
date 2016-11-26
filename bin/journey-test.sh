@@ -272,7 +272,7 @@ main() {
 # Execution begins here...
 
 # If any command fails, fail the script.
-set -e
+set -ex
 SCRIPTPATH=$( pushd `dirname $0` > /dev/null && pwd && popd > /dev/null )
 EXECPATH=$( pwd )
 # Make output easier to read in CI
