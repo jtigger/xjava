@@ -136,13 +136,7 @@ make_local_trackler() {
   cp -r ${xjava}/exercises tracks/java
 
   # Set the version to that expected by x-api
-  echo "1"
-  egrep "trackler" ${xapi_home}/Gemfile.lock
-  echo "2"
-  egrep 'trackler .2' ${xapi_home}/Gemfile.lock
-  echo "3"
-  egrep 'trackler .\\d' ${xapi_home}/Gemfile.lock
-  version=$( egrep 'trackler .\\d' ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
+  version=$( grep -m 1 'trackler' ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
   echo "module Trackler VERSION = \"${version}\" end" > lib/trackler/version.rb
   cat lib/trackler/version.rb
 
