@@ -136,9 +136,17 @@ make_local_trackler() {
   cp -r ${xjava}/exercises tracks/java
 
   # Set the version to that expected by x-api
-  tree ${xapi_home}
+  echo "1"
+  grep "trackler" ${xapi_home}/Gemfile.lock
+  echo "2"
+  grep "trackler (\d" ${xapi_home}/Gemfile.lock
+  echo "3"
+  grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//'
+  echo "4"
+  grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//'
   version=$( grep "trackler (\(\d\+\)" ${xapi_home}/Gemfile.lock | sed 's/.*(//' | sed 's/)//' )
   echo "module Trackler VERSION = \"${version}\" end" > lib/trackler/version.rb
+  cat lib/trackler/version.rb
 
   gem install bundler
   bundle install
